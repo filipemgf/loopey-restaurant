@@ -15,7 +15,20 @@
 			<a href="/contact-page">Contact</a>
 		</nav>
 		<h1>Pizza {{name}}</h1>
-		<h2>Price {{price}}€</h2>
+
+		{{#if price}}
+			<h2>Price {{price}}€</h2>
+
+		{{else}}
+			<h2>Price upon request</h2>
+		{{/if}}
+
+		<h2>Ingredients</h2>
+		<ul class="ingredient-list">
+			{{#each ingredients}}
+				<li>{{this}}</li>
+			{{/each}}
+		</ul>
 		<img src={{img}} />
 	</body>
 </html>

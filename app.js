@@ -24,16 +24,24 @@ const pizzaDetails = {
 		name: "Margarita",
 		price: 15,
 		img: "/images/margarita.jpg",
+		ingredients: ["mozzarella", "tomato sauce", "basilica leaves", "cheese"],
 	},
 	veggie: {
 		name: "Veggie",
 		price: 18,
 		img: "/images/veggie.jpg",
+		ingredients: [
+			"bell pepper",
+			"onion",
+			"tofu balls",
+			"tomato sauce",
+			"cheese",
+		],
 	},
 	seafood: {
 		name: "Seafood",
-		price: 20,
 		img: "/images/seafood.jpg",
+		ingredients: ["shrimp", "onion", "tomato sauce", "cheese"],
 	},
 };
 

@@ -14,3 +14,7 @@ nav {
 nav a {
 	padding: 0 1rem;
 }
+
+.ingredient-list {
+	list-style: none;
+}

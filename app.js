@@ -1,4 +1,5 @@
 const express = require("express");
+const hbs = require("hbs");
 
 const app = express();
 
@@ -7,6 +8,8 @@ const app = express();
 app.use(express.static("public")); //make everything inside /public available
 app.set("views", __dirname + "/views"); //telling the program that the views I'll use for handlebars (hbs) is in the views folder
 app.set("view engine", "hbs"); //sets HBS as my template engine
+
+hbs.registerPartials(__dirname + "/views/partials"); //storing partials in that directory
 
 app.get("/", (request, response, next) => {
 	//req, res,next are objects that have info and functionality related to the request

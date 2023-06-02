@@ -1,44 +1,46 @@
-const express = require("express");
-const hbs = require("hbs");
-const Pizza = require("./models/Pizza.model");
-const { default: mongoose } = require("mongoose");
+const express = require('express');
+const hbs = require('hbs');
+const Pizza = require('./models/Pizza.model');
+const { default: mongoose } = require('mongoose');
 mongoose;
+const bodyParser = require(`body-parser`);
 
 const app = express();
 
 // app.get(path, code); when we get a request for path, execute code
 
-app.use(express.static("public")); //make everything inside /public available
-app.set("views", __dirname + "/views"); //telling the program that the views I'll use for handlebars (hbs) is in the views folder
-app.set("view engine", "hbs"); //sets HBS as my template engine
+app.use(express.static('public')); //make everything inside /public available
+app.set('views', __dirname + '/views'); //telling the program that the views I'll use for handlebars (hbs) is in the views folder
+app.set('view engine', 'hbs'); //sets HBS as my template engine
+app.use(bodyParser.urlencoded({ extended: true })); //let app know we're using body-parser
 
-hbs.registerPartials(__dirname + "/views/partials"); //storing partials in that directory
+hbs.registerPartials(__dirname + '/views/partials'); //storing partials in that directory
 
 async function connectToMongoDB() {
 	try {
 		response = await mongoose.connect(
-			"mongodb://127.0.0.1:27017/loopeyRestaurant"
+			'mongodb://127.0.0.1:27017/loopeyRestaurant'
 		);
 		console.log(
-			"Connected to mongoDB! Database Name:",
+			'Connected to mongoDB! Database Name:',
 			response.connections[0].name
 		);
 	} catch (error) {
-		console.error("Error connecting to MongoDB: ", error);
+		console.error('Error connecting to MongoDB: ', error);
 	}
 }
 
 connectToMongoDB();
 
-app.get("/", (request, response, next) => {
+app.get('/', (request, response, next) => {
 	//req, res,next are objects that have info and functionality related to the request
-	console.log("homepage has been requested");
-	response.render(__dirname + "/views/home-page.hbs");
+	console.log('homepage has been requested');
+	response.render(__dirname + '/views/home-page.hbs');
 });
 
-app.get("/contact-page", (req, res, next) => {
-	console.log("contact page has been requested");
-	res.render(__dirname + "/views/contact-page.hbs"); //render instead of sendFile because we're rendering a view with Handlebars
+app.get('/contact-page', (req, res, next) => {
+	console.log('contact page has been requested');
+	res.render(__dirname + '/views/contact-page.hbs'); //render instead of sendFile because we're rendering a view with Handlebars
 });
 
 /* //non-specific routes
@@ -94,30 +96,50 @@ app.get("/drinks/:drinkName", async (req, res, next) => {
 	res.send("We are asking for: " + req.params.drinkName);
 }); */ //generic route example
 
-app.get("/pizzas", async (req, res, next) => {
-	console.log("product-list requested");
+app.get('/pizzas', async (req, res, next) => {
+	console.log('product-list requested');
+	console.log(req.query); // for /pizzas?maxPrice=42&dough=thin this shows an object with {maxPrice: `42`, dough: `thin`}
+	console.log(req.query.maxPrice); // we can use the object properties to refer to our queries
+
+	const maximumPrice = Number(req.query.maxPrice); //if we have any maximum price, filter by maximumPrice, if not use an empty object as the filter param
+	let filter = {};
+	if (maximumPrice) {
+		filter = { price: { $lt: maximumPrice } };
+	}
 
 	try {
-		const pizzasArr = await Pizza.find();
-		res.render("product-list", { pizzasArr });
+		const pizzasArr = await Pizza.find(filter);
+		res.render('product-list', { pizzasArr });
 	} catch (error) {
 		console.log(error);
 	}
 });
 
-app.get("/pizzas/:pizzaName", async (req, res, next) => {
+app.get('/pizzas/:pizzaName', async (req, res, next) => {
+	// makes it generic!
 	console.log(`${req.params.pizzaName} requested`);
 
 	try {
 		const pizzaFromDB = await Pizza.findOne({
 			title: req.params.pizzaName,
 		});
-		res.render("product", pizzaFromDB);
+		res.render('product', pizzaFromDB);
 	} catch (error) {
 		console.log(error);
 	}
 });
 
+app.post('/login', async (req, res, next) => {
+	console.log('trying to login');
+	console.log(req.body);
+
+	if (req.body.password === 'correct password') {
+		res.send('Welcome!');
+	} else {
+		res.send('Wrong password!');
+	}
+});
+
 app.listen(3000, () => {
-	console.log("Server listening to port 3000");
+	console.log('Server listening to port 3000');
 }); //this listens for requests on that port

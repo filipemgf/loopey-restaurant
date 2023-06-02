@@ -1,3 +1,38 @@
 <h1>this is the home</h1>
 
-<img src="./images/home-logo.jpg" />
+<img class="home-img" src="./images/home-logo.jpg" />
+
+<h3>Search by price</h3>
+<section>
+    <label for="">
+        <form action="/pizzas" method="get">
+        <input type="number" name="maxPrice">
+        <button type="submit">Submit</button>
+    </form> 
+    </label>
+
+</section>
+
+<section>
+    <h3>Login:</h3>
+    <form action="/login" method="post"> {{!-- POST, not GET. Get sends info to the searchQuery (shows up on address bar). POST doesnt! --}}
+        
+    <label>
+    Email:
+        <input type="email" name="emailaddress" required>
+    </label>
+
+    <label>
+        Password:
+        <input type="password" name="password" id="" required>
+        <button type="submit">Login</button>
+    </label>
+
+    </form>
+    
+    
+
+
+</section>
+
+{{> banner}}

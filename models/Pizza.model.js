@@ -25,6 +25,9 @@ const pizzaSchema = new Schema({
 		type: String,
 		enum: ["classic", "thin", "extra-thin", "with garlic"], //defines the ONLY available values for dough:
 	},
+	chef: {
+		type: String,
+	},
 });
 
 //model: what I use to interact

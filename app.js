@@ -1,5 +1,8 @@
 const express = require("express");
 const hbs = require("hbs");
+const Pizza = require("./models/Pizza.model");
+const { default: mongoose } = require("mongoose");
+mongoose;
 
 const app = express();
 
@@ -10,6 +13,22 @@ app.set("views", __dirname + "/views"); //telling the program that the views I'l
 app.set("view engine", "hbs"); //sets HBS as my template engine
 
 hbs.registerPartials(__dirname + "/views/partials"); //storing partials in that directory
+
+async function connectToMongoDB() {
+	try {
+		response = await mongoose.connect(
+			"mongodb://127.0.0.1:27017/loopeyRestaurant"
+		);
+		console.log(
+			"Connected to mongoDB! Database Name:",
+			response.connections[0].name
+		);
+	} catch (error) {
+		console.error("Error connecting to MongoDB: ", error);
+	}
+}
+
+connectToMongoDB();
 
 app.get("/", (request, response, next) => {
 	//req, res,next are objects that have info and functionality related to the request
@@ -22,49 +41,48 @@ app.get("/contact-page", (req, res, next) => {
 	res.render(__dirname + "/views/contact-page.hbs"); //render instead of sendFile because we're rendering a view with Handlebars
 });
 
-const pizzaDetails = {
-	margarita: {
-		name: "Margarita",
-		price: 15,
-		img: "/images/margarita.jpg",
-		ingredients: ["mozzarella", "tomato sauce", "basilica leaves", "cheese"],
-	},
-	veggie: {
-		name: "Veggie",
-		price: 18,
-		img: "/images/veggie.jpg",
-		ingredients: [
-			"bell pepper",
-			"onion",
-			"tofu balls",
-			"tomato sauce",
-			"cheese",
-		],
-	},
-	seafood: {
-		name: "Seafood",
-		img: "/images/seafood.jpg",
-		ingredients: ["shrimp", "onion", "tomato sauce", "cheese"],
-	},
-};
+app.get("/pizzas/margarita", async (req, res, next) => {
+	console.log("Margarita page requested");
 
-app.get("/pizzas/margarita", (req, res, next) => {
-	/* res.send("page for margarita"); */
-	res.render("product", pizzaDetails.margarita); //render("name-of-view") linking my view.hbs file. Also accepts objects as a parameter for extra info we want to pass to handlebars. {{}} <- use this on .hbs to use that info
-
-	console.log("pizza margarita resquested");
+	try {
+		const pizzaFromDB = await Pizza.findOne({ title: "margarita" });
+		/* console.log(pizzaFromDB); */
+		res.render("product", pizzaFromDB);
+	} catch (error) {
+		console.log("Error getting pizza from db", error);
+	}
 });
 
-app.get("/pizzas/veggie", (req, res, next) => {
-	/* res.send("page for veggie"); */
-	res.render("product", pizzaDetails.veggie);
-	console.log("pizza veggie resquested");
+/* Pizza.findOne({ title: "margarita" }) // using .then().catch()
+		.then((margaritaFromDB) => {
+			res.render("product", margaritaFromDB);
+		})
+		.catch((error) =>
+			console.log("Error getting Margarita Pizza from db", error)
+		); */
+
+app.get("/pizzas/veggie", async (req, res, next) => {
+	console.log("Veggie page requested");
+
+	try {
+		const pizzaFromDB = await Pizza.findOne({ title: "veggie" });
+		/* console.log(pizzaFromDB); */
+		res.render("product", pizzaFromDB);
+	} catch (error) {
+		console.log("Error getting pizza from db", error);
+	}
 });
 
-app.get("/pizzas/seafood", (req, res, next) => {
-	/* res.send("page for seafood"); */
-	res.render("product", pizzaDetails.seafood);
-	console.log("pizza seafood requested");
+app.get("/pizzas/seafood", async (req, res, next) => {
+	console.log("Seafood page requested");
+
+	try {
+		const pizzaFromDB = await Pizza.findOne({ title: "seafood" });
+		/* console.log(pizzaFromDB); */
+		res.render("product", pizzaFromDB);
+	} catch (error) {
+		console.log("Error getting pizza from db", error);
+	}
 });
 
 app.listen(3000, () => {

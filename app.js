@@ -41,32 +41,33 @@ app.get("/contact-page", (req, res, next) => {
 	res.render(__dirname + "/views/contact-page.hbs"); //render instead of sendFile because we're rendering a view with Handlebars
 });
 
+/* //non-specific routes
 app.get("/pizzas/margarita", async (req, res, next) => {
 	console.log("Margarita page requested");
 
 	try {
 		const pizzaFromDB = await Pizza.findOne({ title: "margarita" });
-		/* console.log(pizzaFromDB); */
+		console.log(pizzaFromDB);
 		res.render("product", pizzaFromDB);
 	} catch (error) {
 		console.log("Error getting pizza from db", error);
 	}
 });
 
-/* Pizza.findOne({ title: "margarita" }) // using .then().catch()
+Pizza.findOne({ title: "margarita" }) // using .then().catch()
 		.then((margaritaFromDB) => {
 			res.render("product", margaritaFromDB);
 		})
 		.catch((error) =>
 			console.log("Error getting Margarita Pizza from db", error)
-		); */
+		);
 
 app.get("/pizzas/veggie", async (req, res, next) => {
 	console.log("Veggie page requested");
 
 	try {
 		const pizzaFromDB = await Pizza.findOne({ title: "veggie" });
-		/* console.log(pizzaFromDB); */
+		console.log(pizzaFromDB);
 		res.render("product", pizzaFromDB);
 	} catch (error) {
 		console.log("Error getting pizza from db", error);
@@ -78,10 +79,42 @@ app.get("/pizzas/seafood", async (req, res, next) => {
 
 	try {
 		const pizzaFromDB = await Pizza.findOne({ title: "seafood" });
-		/* console.log(pizzaFromDB); */
+		console.log(pizzaFromDB);
 		res.render("product", pizzaFromDB);
 	} catch (error) {
 		console.log("Error getting pizza from db", error);
+	}
+});
+
+*/
+
+/* //creating a generic route with req.params (example)
+app.get("/drinks/:drinkName", async (req, res, next) => {
+	console.log(req.params); //object in this format: {drinkName: WhateverWeCallInBrowser}
+	res.send("We are asking for: " + req.params.drinkName);
+}); */ //generic route example
+
+app.get("/pizzas", async (req, res, next) => {
+	console.log("product-list requested");
+
+	try {
+		const pizzasArr = await Pizza.find();
+		res.render("product-list", { pizzasArr });
+	} catch (error) {
+		console.log(error);
+	}
+});
+
+app.get("/pizzas/:pizzaName", async (req, res, next) => {
+	console.log(`${req.params.pizzaName} requested`);
+
+	try {
+		const pizzaFromDB = await Pizza.findOne({
+			title: req.params.pizzaName,
+		});
+		res.render("product", pizzaFromDB);
+	} catch (error) {
+		console.log(error);
 	}
 });
 

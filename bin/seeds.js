@@ -13,28 +13,28 @@ mongoose
 
 		const newPizzasArr = [
 			{
-				title: "margarita",
+				title: "Margarita",
 				price: 12,
 				ingredients: ["mozzarella", "tomato sauce", "basilicum"],
 				imageFile: "pizza-margarita.jpg",
 				chef: "Filipe",
 			},
 			{
-				title: "veggie",
+				title: "Veggie",
 				price: 15,
 				ingredients: ["tomato", "cucumber", "olives"],
 				imageFile: "pizza-veggie.jpg",
 				chef: "Luis",
 			},
 			{
-				title: "seafood",
+				title: "Seafood",
 				price: 20,
 				ingredients: ["mozzarella", "tomato", "prawn"],
 				imageFile: "pizza-seafood.jpg",
 				chef: "Alessandra",
 			},
 			{
-				title: "hawaiian",
+				title: "Hawaiian",
 				price: 17,
 				ingredients: ["mozzarella", "pineapple", "patience..."],
 				chef: "Felipe",

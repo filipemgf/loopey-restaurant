@@ -19,3 +19,16 @@ nav a {
 .ingredient-list {
 	list-style: none;
 }
+
+.pizza-summary a {
+	text-decoration: none;
+	display: inline-block;
+	padding: 10px 20px;
+	border-radius: 20px;
+	background-color: #4caf50;
+	color: white;
+	text-decoration: none;
+	border: none;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	cursor: pointer;
+}
